@@ -1,0 +1,6 @@
+spring:
+  application:
+    name:
+      user-service
+
+//TODO: add config server, eureka client, all dependencies and dockerfile
