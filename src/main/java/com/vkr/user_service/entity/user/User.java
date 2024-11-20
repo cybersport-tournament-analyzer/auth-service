@@ -1,13 +1,13 @@
 package com.vkr.user_service.entity.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.vkr.user_service.entity.avatar.UserProfilePic;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -24,13 +24,28 @@ public class User{
     @UuidGenerator
     private UUID id;
 
+    @Column(name = "steam_id", length = 64, unique = true, nullable = false)
+    private String steamId;
+
     @Column(name = "username", length = 64, nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password", length = 64, nullable = false)
-    private String password;
+    @Column(name = "hours_played", nullable = true)
+    private Long hoursPlayed;
 
-    @Column(name = "email", length = 128, unique = true, nullable = false)
-    private String email;
+    @Column(name = "rating_elo", nullable = true)
+    private Long ratingElo;
 
+    @Column(name = "faceit_winrate", nullable = true)
+    private Long faceitWinrate;
+
+    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+//    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride(name = "user_profile_pic", column = @Column(name = "user_profile_pic", length = 128)),
+//    })
+//    private UserProfilePic userProfilePic;
 }

@@ -1,9 +1,8 @@
-package com.vkr.user_service.controller;
+package com.vkr.user_service.controller.user;
 
-import com.vkr.user_service.dto.user.UserCreateDto;
 import com.vkr.user_service.dto.user.UserDto;
-import com.vkr.user_service.dto.user.UserUpdateDto;
 import com.vkr.user_service.service.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,30 +18,28 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get all users")
     public Page<UserDto> getAllUsers(Pageable pageable) {
         return userService.getAllUsers(pageable);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@RequestBody UserCreateDto userDto) {
-        return userService.createUser(userDto);
-    }
-
     @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get user by username")
     public UserDto getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @PatchMapping("/{username}")
+    @GetMapping("/steam/{steamId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto updateUser(@PathVariable String username, @RequestBody UserUpdateDto userDto) {
-        return userService.updateUser(username, userDto);
+    @Operation(summary = "Get user by steamId")
+    public UserDto getUserBySteamId(@PathVariable String steamId) {
+        return userService.getUserBySteamId(steamId);
     }
 
     @DeleteMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Delete user")
     public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }

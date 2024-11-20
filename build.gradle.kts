@@ -43,6 +43,7 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	implementation("org.slf4j:slf4j-api:2.0.5")
 	implementation("ch.qos.logback:logback-classic:1.4.11")
+	implementation("org.springframework.security.oauth:spring-security-oauth2:2.5.2.RELEASE")
 	implementation("org.mapstruct:mapstruct:1.5.3.Final")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
