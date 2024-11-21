@@ -2,10 +2,7 @@ package com.vkr.user_service.dto.steam;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
 @Data
@@ -17,6 +14,10 @@ public class SteamOpenIdLoginDto {
     @URL
     @NotBlank
     private String ns;
+
+    @URL
+    @NotBlank
+    String mode;
 
     @URL
     @NotBlank
