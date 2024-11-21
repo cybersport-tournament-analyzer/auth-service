@@ -33,13 +33,11 @@ public class AuthServiceImpl implements AuthService {
                 steamApiUrl, steamApiToken, steamUserId);
         RestTemplate restTemplate = new RestTemplate();
 
-        // Запрос к Steam API
         ResponseEntity<String> steamResponse = restTemplate.getForEntity(steamUrl, String.class);
         if (steamResponse.getStatusCode() != HttpStatus.OK) {
             throw new IllegalStateException("Failed to fetch user data from Steam");
         }
 
-        // Извлечение данных из Steam API
         JsonNode playerData = new ObjectMapper().readTree(steamResponse.getBody())
                 .path("response")
                 .path("players")
@@ -50,7 +48,6 @@ public class AuthServiceImpl implements AuthService {
 
         Map<String, Object> userData = new ObjectMapper().convertValue(playerData, Map.class);
 
-        // Запрос к Faceit API
         String faceitUrl = "https://open.faceit.com/data/v4/players?game=cs2&game_player_id=" + steamUserId;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + faceitApiKey);
@@ -64,19 +61,19 @@ public class AuthServiceImpl implements AuthService {
             if (faceitResponse.getStatusCode() == HttpStatus.OK) {
                 JsonNode faceitData = new ObjectMapper().readTree(faceitResponse.getBody())
                         .path("games")
-                        .path("csgo");
+                        .path("cs2");
 
                 if (!faceitData.isMissingNode()) {
                     int faceitElo = faceitData.path("faceit_elo").asInt();
-                    userData.put("faceit_elo", faceitElo); // Добавляем Faceit Elo к пользовательским данным
+                    userData.put("faceit_elo", faceitElo);
                 } else {
-                    userData.put("faceit_elo", "N/A"); // Если данные отсутствуют
+                    userData.put("faceit_elo", "N/A");
                 }
             } else {
-                userData.put("faceit_elo", "N/A"); // Если запрос к Faceit API не удался
+                userData.put("faceit_elo", "N/A");
             }
         } catch (Exception e) {
-            userData.put("faceit_elo", "N/A"); // Обработка ошибок при запросе
+            userData.put("faceit_elo", "N/A");
             System.err.println("Failed to fetch data from Faceit API: " + e.getMessage());
         }
 

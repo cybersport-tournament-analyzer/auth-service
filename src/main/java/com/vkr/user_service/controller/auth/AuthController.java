@@ -65,6 +65,7 @@ public class AuthController {
             sc.setAuthentication(auth);
             request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
 
+
             //TODO: возвращать SteamToken из Provider
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:8080/steam/profile")).build();
 
