@@ -7,6 +7,7 @@ spring:
       enabled: true
       fail-fast: true
       label: remote-config
+      uri: http://5.34.209.144:8888/
   config:
     import: optional:config-service:http://5.34.209.144:8888/
   profiles:
