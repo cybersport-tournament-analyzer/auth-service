@@ -22,6 +22,7 @@ import static org.springframework.security.web.context.HttpSessionSecurityContex
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/steam")
+@CrossOrigin("http://localhost:4200")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final AuthService service;
@@ -65,7 +66,7 @@ public class AuthController {
             request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
 
             //TODO: возвращать SteamToken из Provider
-            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/steam/profile")).build();
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:8080/steam/profile")).build();
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
