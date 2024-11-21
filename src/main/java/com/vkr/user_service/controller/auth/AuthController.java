@@ -85,4 +85,9 @@ public class AuthController {
     public ResponseEntity<String> failed() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
     }
+
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        service.logout(request);
+    }
 }

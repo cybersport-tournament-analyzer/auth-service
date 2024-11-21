@@ -2,6 +2,7 @@ package com.vkr.user_service.service.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,9 +49,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String extractSteamId(String claimedId) {
-        // Извлечение Steam ID из claimed_id
         String[] parts = claimedId.split("/");
         return parts[parts.length - 1];
+    }
+
+    @Override
+    public void logout(HttpServletRequest request) {
+        request.getSession().invalidate();
     }
 
 }
