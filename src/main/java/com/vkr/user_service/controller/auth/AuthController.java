@@ -2,8 +2,8 @@ package com.vkr.user_service.controller.auth;
 
 import com.vkr.user_service.dto.steam.SteamOpenIdLoginDto;
 import com.vkr.user_service.service.auth.AuthService;
-import com.vkr.user_service.util.SteamToken;
-import com.vkr.user_service.util.SteamUserPrincipal;
+import com.vkr.user_service.util.steam.SteamToken;
+import com.vkr.user_service.util.steam.SteamUserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class AuthController {
     @GetMapping("/login/redirect")
     public ResponseEntity<Object> loginRedirect(HttpServletRequest request, @RequestParam Map<String, String> allRequestParams) {
         try {
-            // Создание DTO для OpenID
+
             SteamOpenIdLoginDto dto = new SteamOpenIdLoginDto(
                     allRequestParams.get("openid.ns"),
                     allRequestParams.get("openid.mode"),

@@ -1,4 +1,4 @@
-package com.vkr.user_service.util;
+package com.vkr.user_service.util.steam;
 
 import com.vkr.user_service.entity.user.User;
 import lombok.*;

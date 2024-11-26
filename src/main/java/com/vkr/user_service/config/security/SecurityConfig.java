@@ -1,6 +1,6 @@
 package com.vkr.user_service.config.security;
 
-import com.vkr.user_service.util.SteamAuthenticationProvider;
+import com.vkr.user_service.util.steam.SteamAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

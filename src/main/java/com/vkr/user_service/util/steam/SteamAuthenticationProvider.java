@@ -1,9 +1,8 @@
-package com.vkr.user_service.util;
+package com.vkr.user_service.util.steam;
 
 import com.vkr.user_service.entity.user.User;
 import com.vkr.user_service.repository.user.UserRepository;
 import com.vkr.user_service.service.auth.AuthService;
-import com.vkr.user_service.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
