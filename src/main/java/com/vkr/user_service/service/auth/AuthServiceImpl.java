@@ -91,6 +91,7 @@ public class AuthServiceImpl implements AuthService {
 
         HttpEntity<String> faceitEntity = new HttpEntity<>(headers);
 
+
         try {
             ResponseEntity<String> faceitResponse = restTemplate.exchange(faceitUrl, HttpMethod.GET, faceitEntity, String.class);
 
@@ -126,29 +127,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseDto login(HttpServletResponse response, Map<String, String> allRequestParams) {
 
-
-//            SteamOpenIdLoginDto dto = new SteamOpenIdLoginDto(
-//                    allRequestParams.get("openid.ns"),
-//                    allRequestParams.get("openid.mode"),
-//                    allRequestParams.get("openid.op_endpoint"),
-//                    allRequestParams.get("openid.claimed_id"),
-//                    allRequestParams.get("openid.identity"),
-//                    allRequestParams.get("openid.return_to"),
-//                    allRequestParams.get("openid.response_nonce"),
-//                    allRequestParams.get("openid.assoc_handle"),
-//                    allRequestParams.get("openid.signed"),
-//                    allRequestParams.get("openid.sig")
-//            );
-
         String steamUserId = extractSteamId(allRequestParams.get("openid.claimed_id"));
 
 
         SteamToken authReq = new SteamToken(steamUserId);
         Authentication auth = authenticationManager.authenticate(authReq);
 
-//            SecurityContext sc = SecurityContextHolder.getContext();
-//            sc.setAuthentication(auth);
-//            request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
 
         SteamUserPrincipal principal = (SteamUserPrincipal) auth.getPrincipal();
         String accessToken = jwtAccessGenerator.generateToken(principal);
@@ -176,15 +160,19 @@ public class AuthServiceImpl implements AuthService {
             String token = jwtUtil.extractTokenFromRequestCookie(request);
             Claims claims = jwtUtil.extractAllClaims(token, jwtRefreshGenerator);
 
-            String username = claims.getSubject();
-            String cacheToken = getCachedRefreshToken(username);
+            String steamId = claims.getSubject();
+            System.out.println(steamId);
+            String cacheToken = getCachedRefreshToken(steamId);
+            System.out.println(cacheToken);
 
 
             if (token.equals(cacheToken)) {
 
+                System.out.println("Refresh token is valid");
+
                 UserDetails user = userService
                         .userDetailsService()
-                        .loadUserByUsername(username);
+                        .loadUserByUsername(steamId);
 
                 String accessToken = jwtAccessGenerator.generateToken(user);
 
