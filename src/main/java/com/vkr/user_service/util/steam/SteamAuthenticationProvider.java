@@ -1,5 +1,6 @@
 package com.vkr.user_service.util.steam;
 
+import com.vkr.user_service.entity.user.Role;
 import com.vkr.user_service.entity.user.User;
 import com.vkr.user_service.repository.user.UserRepository;
 import com.vkr.user_service.service.auth.AuthService;
@@ -34,10 +35,20 @@ public class SteamAuthenticationProvider implements AuthenticationProvider {
             return null;
         }
         Optional<User> userOptional = userRepository.findBySteamId(steamId);
-        User user = userOptional.orElseGet(() -> {
+        User user;
+        if (userOptional.isEmpty()) {
             String username = (String) userAttributes.get("personaname");
-            return userRepository.save(new User(UUID.randomUUID(), steamId, username, 0L, 0L, 0L, LocalDateTime.now()));
-        });
+            user = userRepository.save(new User(UUID.randomUUID(), steamId, username, 0L, 0L, 0L, LocalDateTime.now(), Role.USER));
+        } else {
+            user = userOptional.get();
+            System.out.println(user.getSteamId());
+            user.setHoursPlayed(userOptional.get().getHoursPlayed());
+            user.setFaceitWinrate(userOptional.get().getFaceitWinrate());
+            user.setRatingElo(userOptional.get().getRatingElo());
+            user.setUsername(userOptional.get().getUsername());
+            user = userRepository.save(user);
+        }
+
         SteamUserPrincipal steamUserPrincipal = SteamUserPrincipal.create(user, userAttributes);
 
         return new SteamToken(steamId, steamUserPrincipal, steamUserPrincipal.getAuthorities());

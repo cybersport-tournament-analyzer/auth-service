@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changeset/V001_user-service_initial.sql
+  - include:
+      file: db/changelog/changeset/V002_user-service_add_role.sql

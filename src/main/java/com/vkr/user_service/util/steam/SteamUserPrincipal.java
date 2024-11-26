@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Data
@@ -18,7 +15,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SteamUserPrincipal implements UserDetails {
 
-    private final User user;
+    private UUID id;
+    private String steamId;
+    private String username;
     private Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
 
@@ -26,7 +25,7 @@ public class SteamUserPrincipal implements UserDetails {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new SteamUserPrincipal(user, Collections.unmodifiableMap(attributes), authorities);
+        return new SteamUserPrincipal(user.getId(), user.getSteamId(), user.getUsername(), Collections.unmodifiableMap(attributes), authorities);
     }
 
     @Override
@@ -36,7 +35,7 @@ public class SteamUserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return this.steamId;
     }
 
     @Override

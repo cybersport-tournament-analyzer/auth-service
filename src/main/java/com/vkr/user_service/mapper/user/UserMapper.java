@@ -1,7 +1,6 @@
 package com.vkr.user_service.mapper.user;
 
 import com.vkr.user_service.dto.user.UserDto;
-import com.vkr.user_service.dto.user.UserUpdateDto;
 import com.vkr.user_service.entity.user.User;
 import org.mapstruct.*;
 

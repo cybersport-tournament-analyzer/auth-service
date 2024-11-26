@@ -1,9 +1,10 @@
 package com.vkr.user_service.service.user;
 
 import com.vkr.user_service.dto.user.UserDto;
-import com.vkr.user_service.dto.user.UserUpdateDto;
+import com.vkr.user_service.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {
 
@@ -15,4 +16,8 @@ public interface UserService {
     UserDto getUserBySteamId(String steamId);
 
     void deleteUser(String username);
+
+    UserDetailsService userDetailsService();
+
+    User getBySteamId(String steamId);
 }
