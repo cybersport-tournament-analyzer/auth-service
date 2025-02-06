@@ -36,7 +36,7 @@ public class AuthController {
 //            + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
 
     @GetMapping("/login")
-    public ResponseEntity<Void> redirectToSteam() {
+    public ResponseEntity<String> redirectToSteam() {
 //            Map<String, String> response = new HashMap<>();
 //            response.put("openIdUrl", openIdUrl);
 //            return ResponseEntity.ok(response);
@@ -46,7 +46,7 @@ public class AuthController {
                 + "&openid.realm=http://localhost:8080"
                 + "&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select"
                 + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(openIdUrl)).build();
+        return ResponseEntity.ok(openIdUrl);
     }
 
     @GetMapping("/login/redirect")
