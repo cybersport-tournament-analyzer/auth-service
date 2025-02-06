@@ -1,28 +1,24 @@
 package com.vkr.user_service.controller.auth;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vkr.user_service.dto.response.ResponseDto;
 import com.vkr.user_service.service.auth.AuthService;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.jackson.Jacksonized;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost:4200")
 @Tag(name = "Auth Controller")
 public class AuthController {
 
@@ -49,10 +45,13 @@ public class AuthController {
         return ResponseEntity.ok(openIdUrl);
     }
 
-    @GetMapping("/login/redirect")
-    public ResponseDto loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) {
 
-        return service.login(response, allRequestParams);
+    @GetMapping("/login/redirect")
+    public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException, IOException {
+        ResponseDto loginResponse = service.login(response, allRequestParams);
+
+        String redirectUrl = "http://localhost:4200/auth.html?accessToken=" + loginResponse.getAccessToken();
+        response.sendRedirect(redirectUrl);
     }
 
     @PostMapping("/refresh")
