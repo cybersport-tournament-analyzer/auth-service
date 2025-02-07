@@ -15,7 +15,7 @@ jobs:
       - name: Download Docker image artifact
         uses: actions/download-artifact@v4
         with:
-          name: user-service-docker-image
+          name: vkr-user-service
           path: .
 
       - name: Deploy to server
