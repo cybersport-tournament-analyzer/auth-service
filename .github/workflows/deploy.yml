@@ -1,4 +1,4 @@
-name: User Service CD lol
+name: User Service CD
 
 on:
   workflow_run:
@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Download Docker image artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: vkr-user-service
           path: .
