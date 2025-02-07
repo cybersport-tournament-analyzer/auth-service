@@ -68,9 +68,9 @@ jobs:
 
           # Load Docker image and run container
           ssh $REMOTE_USER@$REMOTE_HOST << EOF
-            cd $REMOTE_PATH
+            cd ..$REMOTE_PATH
             docker load -i vkr-user-service.tar
             docker stop vkr-user-service || true
             docker rm vkr-user-service || true
-            docker run -d --name vkr-user-service -p 8080:8080 vkr-user-service:latest
+            docker run -d -p 8080:8080 vkr-user-service:latest
           EOF
