@@ -1,5 +1,6 @@
 package com.vkr.user_service.controller.auth;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vkr.user_service.dto.response.ResponseDto;
 import com.vkr.user_service.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,7 +45,6 @@ public class AuthController {
                 + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
         return ResponseEntity.ok(openIdUrl);
     }
-
 
     @GetMapping("/login/redirect")
     public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException, IOException {
