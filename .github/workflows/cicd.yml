@@ -64,7 +64,7 @@ jobs:
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
 
           # Copy Docker image to server
-          scp ./vkr-user-service.tar $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
+          scp ./vkr-user-service/vkr-user-service.tar $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
 
           # Load Docker image and run container
           ssh $REMOTE_USER@$REMOTE_HOST << EOF
