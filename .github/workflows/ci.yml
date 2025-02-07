@@ -35,7 +35,7 @@ jobs:
           docker save -o vkr-user-service.tar vkr-user-service:latest
 
       - name: Upload Docker image as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: vkr-user-service
           path: vkr-user-service.tar
