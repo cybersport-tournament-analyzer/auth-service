@@ -1,4 +1,4 @@
-name: User Service CD
+name: User Service CD lol
 
 on:
   workflow_run:
