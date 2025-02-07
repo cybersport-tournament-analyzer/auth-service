@@ -16,7 +16,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: vkr-user-service
-          path: .
+          path: vkr-user-service.tar
 
       - name: Deploy to server
         env:
