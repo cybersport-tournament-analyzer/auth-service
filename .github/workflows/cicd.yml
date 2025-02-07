@@ -67,10 +67,13 @@ jobs:
           scp ./vkr-user-service/vkr-user-service.tar $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
 
           # Load Docker image and run container
-          ssh $REMOTE_USER@$REMOTE_HOST << EOF
-            cd ..$REMOTE_PATH
+          ssh -o ConnectTimeout=60 $REMOTE_USER@$REMOTE_HOST << EOF
+            set -x
+            cd $REMOTE_PATH
+            ls -la
             docker load -i vkr-user-service.tar
             docker stop vkr-user-service || true
             docker rm vkr-user-service || true
             docker run -d -p 8080:8080 vkr-user-service:latest
+            exit
           EOF
