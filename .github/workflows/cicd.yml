@@ -49,7 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.build.outputs.artifact-name }}
-          path: ./vkr-user-service.tar
+          path: .
 
       - name: Deploy to server
         env:
