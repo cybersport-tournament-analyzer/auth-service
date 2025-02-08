@@ -57,8 +57,6 @@ public class AuthController {
         String redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
 
         response.sendRedirect(redirectUrl);
-
-
     }
 
     @PostMapping("/refresh")
