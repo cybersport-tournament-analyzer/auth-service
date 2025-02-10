@@ -5,7 +5,6 @@ import com.vkr.user_service.util.steam.SteamUserPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Profile Controller")
 public class ProfileController {
 
+    //todo = return smth cooler than dat shit
     @GetMapping("/profile")
     public ResponseEntity<Object> profile() {
         SteamToken authentication = (SteamToken) SecurityContextHolder.getContext().getAuthentication();

@@ -77,6 +77,6 @@ jobs:
             docker load -i vkr-user-service.tar
             docker stop vkr-user-service || true
             docker rm vkr-user-service || true
-            docker run -d -p 8080:8080 -e CONFIG_HOST=$CONFIG_HOST -e CONFIG_GITHUB_LABEL=$CONFIG_GITHUB_LABEL -e EUREKA_HOST=$EUREKA_HOST vkr-user-service:latest
+            docker run --name vkr-user-service -d -p 8080:8080 -e CONFIG_HOST=$CONFIG_HOST -e CONFIG_GITHUB_LABEL=$CONFIG_GITHUB_LABEL -e EUREKA_HOST=$EUREKA_HOST vkr-user-service:latest
             exit
           EOF
