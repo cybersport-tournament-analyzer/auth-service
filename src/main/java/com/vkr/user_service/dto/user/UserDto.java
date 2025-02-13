@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -29,9 +30,7 @@ public class UserDto {
 
     private Long faceitWinrate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime createdAt;
+//    private Instant createdAt;
 
     private Role role;
 }
