@@ -46,11 +46,9 @@ public class AuthController {
     }
 
     @GetMapping("/login/redirect")
-    public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException, IOException {
-        ResponseDto loginResponse = service.login(response, allRequestParams);
+    public ResponseDto loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException, IOException {
 
-        String redirectUrl = "http://localhost:4200/auth.html?accessToken=" + loginResponse.getAccessToken();
-        response.sendRedirect(redirectUrl);
+        return service.login(response, allRequestParams);
     }
 
     @PostMapping("/refresh")
