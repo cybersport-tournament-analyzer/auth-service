@@ -24,7 +24,9 @@ public class SwaggerConfig {
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .servers(List.of(
                         new Server().url("http://localhost:8080")
-                                .description("Production server")
+                                .description("localhost server"),
+                        new Server().url("http://109.172.95.212:8080")
+                                .description("test server")
                 ));
     }
 

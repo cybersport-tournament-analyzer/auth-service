@@ -35,7 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserBySteamId(String steamId) {
-        return userRepository.findBySteamId(steamId).map(userMapper::toDto).orElse(null);
+        return userRepository.findBySteamId(steamId).map(userMapper::toDto)
+                .orElseThrow(() -> new UserNotFoundException("steamId", steamId));
     }
 
     @Override

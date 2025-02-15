@@ -37,7 +37,7 @@ public class SteamAuthenticationProvider implements AuthenticationProvider {
         Optional<User> userOptional = userRepository.findBySteamId(steamId);
         User user;
         String username = (String) userAttributes.get("personaname");
-        Integer faceitElo = (Integer) userAttributes.get("faceit_elo");
+        Integer faceitElo = !userAttributes.get("faceit_elo").equals("N/A") ? (Integer) userAttributes.get("faceit_elo") : 0;
         if (userOptional.isEmpty()) {
             user = userRepository.save(new User(UUID.randomUUID(), steamId, username, 0L, Long.valueOf(faceitElo), 0L, LocalDateTime.now(), Role.USER));
         } else {
