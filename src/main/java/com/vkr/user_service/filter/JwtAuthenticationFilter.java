@@ -96,11 +96,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             user = userRepository.save(new User(UUID.randomUUID(), steamId, username, 0L, Long.valueOf(faceitElo), 0L, LocalDateTime.now(), Role.USER));
         } else {
             user = userOptional.get();
-//            System.out.println(user.getSteamId());
             user.setHoursPlayed(userOptional.get().getHoursPlayed());
             user.setFaceitWinrate(userOptional.get().getFaceitWinrate());
             user.setRatingElo(Long.valueOf(faceitElo));
-            user.setUsername(username);
+            user.setSteamUsername(username);
             user = userRepository.save(user);
         }
         SteamUserPrincipal steamUserPrincipal = SteamUserPrincipal.create(user, userAttributes);
