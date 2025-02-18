@@ -22,7 +22,7 @@ public class UserDto {
 
     private String steamId;
 
-    private String username;
+    private String steamUsername;
 
     private Long hoursPlayed;
 

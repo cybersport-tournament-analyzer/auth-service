@@ -31,8 +31,8 @@ public class User implements UserDetails {
     @Column(name = "steam_id", length = 64, unique = true, nullable = false)
     private String steamId;
 
-    @Column(name = "username", length = 64, nullable = false, unique = true)
-    private String username;
+    @Column(name = "steam_username", length = 64, nullable = false, unique = true)
+    private String steamUsername;
 
     @Column(name = "hours_played", nullable = true)
     private Long hoursPlayed;
@@ -60,6 +60,11 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.steamId;
     }
 
     @Override
