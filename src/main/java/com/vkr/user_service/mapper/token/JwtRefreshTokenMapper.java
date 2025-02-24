@@ -18,6 +18,7 @@ public interface JwtRefreshTokenMapper {
      * @return Объект для кеширования
      */
     @Mapping(source = "user.steamId", target = "steamId")
-    JwtRefreshToken toCache(String token, SteamUserPrincipal user);
+    @Mapping(source = "expirationTime", target = "expiration")
+    JwtRefreshToken toCache(String token, long expirationTime, SteamUserPrincipal user);
 }
 
