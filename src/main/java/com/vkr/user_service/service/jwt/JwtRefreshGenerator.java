@@ -30,7 +30,8 @@ public class JwtRefreshGenerator extends AbstractJwtGenerator {
 
             if (token == null) {
                 String newToken = generateToken(null, userDetails);
-                token = jwtRefreshTokenMapper.toCache(newToken, principal);
+                long expirationTime = getSecret().getExpiration() / 1000;
+                token = jwtRefreshTokenMapper.toCache(newToken, expirationTime, principal);
                 token = jwtRefreshTokenRepository.save(token);
             }
 

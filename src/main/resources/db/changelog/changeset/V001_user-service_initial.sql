@@ -1,14 +1,11 @@
-create table users
-(
-    id             uuid         not null,
-    username       varchar(255) not null,
-    steam_id       varchar(255) not null,
-    hours_played   int          not null,
-    rating_elo     int          not null,
-    faceit_winrate int          not null,
-    created_at     timestamp    not null,
-    constraint pk_users primary key (id)
+CREATE TABLE users (
+                       id                 UUID         NOT NULL,
+                       steam_username     VARCHAR(255) NOT NULL,
+                       steam_id           VARCHAR(255) NOT NULL,
+                       rating_elo         INT          NOT NULL,
+                       avatar_image_link  VARCHAR(255) NOT NULL,
+                       steam_profile_link VARCHAR(255) NOT NULL,
+                       created_at         TIMESTAMP    NOT NULL,
+                       role               VARCHAR(255) NOT NULL,
+                       CONSTRAINT pk_users PRIMARY KEY (id)
 );
-
-alter table users
-    add constraint uc_users_username unique (username);

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,12 +50,13 @@ public class AuthController {
 
 
     @GetMapping("/login/redirect")
-    public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException, IOException {
+    public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
         String redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
 
         response.sendRedirect(redirectUrl);
+//        return service.login(response, allRequestParams);
     }
 
     @PostMapping("/refresh")
