@@ -31,17 +31,17 @@ public class User implements UserDetails {
     @Column(name = "steam_id", length = 64, unique = true, nullable = false)
     private String steamId;
 
-    @Column(name = "username", length = 64, nullable = false, unique = true)
-    private String username;
+    @Column(name = "steam_username", length = 64, nullable = false)
+    private String steamUsername;
 
-    @Column(name = "hours_played", nullable = true)
-    private Long hoursPlayed;
-
-    @Column(name = "rating_elo", nullable = true)
+    @Column(name = "rating_elo", nullable = false)
     private Long ratingElo;
 
-    @Column(name = "faceit_winrate", nullable = true)
-    private Long faceitWinrate;
+    @Column(name = "avatar_image_link", nullable = false)
+    private String avatarImageLink;
+
+    @Column(name = "steam_profile_link", nullable = false)
+    private String steamProfileLink;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
@@ -60,6 +60,11 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.steamId;
     }
 
     @Override
