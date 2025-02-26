@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 
-@FeignClient(name = "matchmaking-service", url = "http://localhost:8081/")
+@FeignClient(name = "matchmaking-service", url = "http://109.172.95.212:8081/")
 public interface MatchmakingServiceClient {
     @GetMapping("/server")
     Page<Server> findAll(Pageable pageable) throws IOException, InterruptedException ;
