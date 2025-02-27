@@ -14,9 +14,6 @@ import java.util.List;
 public class SwaggerConfig {
 
 
-    /**
-     * Настройка Swagger
-     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -30,9 +27,6 @@ public class SwaggerConfig {
                 ));
     }
 
-    /**
-     * Создание схемы аутентификации
-     */
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)
                 .bearerFormat("JWT")
