@@ -52,7 +52,7 @@ public class AuthController {
     public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
-        String redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        String redirectUrl = "http://109.172.95.212:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
 
         response.sendRedirect(redirectUrl);
 //        return service.login(response, allRequestParams);
