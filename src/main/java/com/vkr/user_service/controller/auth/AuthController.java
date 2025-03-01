@@ -49,13 +49,20 @@ public class AuthController {
 
 
     @GetMapping("/login/redirect")
-    public void loginRedirect(HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
+    public void loginRedirect(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
-        String redirectUrl = "http://109.172.95.212:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        String requestUrl = request.getRequestURL().toString();
+        String baseUrl = requestUrl.replace(request.getRequestURI(), "");
+
+        String redirectUrl;
+        if (baseUrl.contains("localhost")) {
+            redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        } else {
+            redirectUrl = "http://109.172.95.212:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        }
 
         response.sendRedirect(redirectUrl);
-//        return service.login(response, allRequestParams);
     }
 
     @PostMapping("/refresh")
