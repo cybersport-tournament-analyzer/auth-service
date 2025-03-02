@@ -22,6 +22,8 @@ import java.util.Map;
 @Tag(name = "Auth Controller")
 public class AuthController {
 
+    String requestUrl;
+    String baseUrl;
     private final AuthService service;
     @JsonProperty("openIdUrl")
     String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
@@ -32,9 +34,11 @@ public class AuthController {
             + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
 
     @GetMapping("/login")
-    public ResponseEntity<Map<String, String>> redirectToSteam() {
+    public ResponseEntity<Map<String, String>> redirectToSteam(HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
         response.put("openIdUrl", openIdUrl);
+        requestUrl = request.getRequestURL().toString();
+        baseUrl = requestUrl.replace(request.getRequestURI(), "");
         return ResponseEntity.ok(response);
 //        String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
 //                + "&openid.mode=checkid_setup"
@@ -49,18 +53,10 @@ public class AuthController {
 
 
     @GetMapping("/login/redirect")
-    public void loginRedirect(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
+    public void loginRedirect( HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
-        String requestUrl = request.getRequestURL().toString();
-        String baseUrl = requestUrl.replace(request.getRequestURI(), "");
-
-        String redirectUrl;
-        if (baseUrl.contains("localhost")) {
-            redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
-        } else {
-            redirectUrl = "http://109.172.95.212:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
-        }
+        String redirectUrl = baseUrl+"/callback-token?accessToken=" + loginResponse.getAccessToken();
 
         response.sendRedirect(redirectUrl);
     }
