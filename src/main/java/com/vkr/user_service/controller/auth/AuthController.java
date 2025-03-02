@@ -37,8 +37,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> redirectToSteam(HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
         response.put("openIdUrl", openIdUrl);
-        requestUrl = request.getRequestURL().toString();
-        baseUrl = requestUrl.replace(request.getRequestURI(), "");
+        baseUrl = request.getServerName();
         return ResponseEntity.ok(response);
 //        String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
 //                + "&openid.mode=checkid_setup"
@@ -56,7 +55,7 @@ public class AuthController {
     public void loginRedirect( HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
-        String redirectUrl = baseUrl+"/callback-token?accessToken=" + loginResponse.getAccessToken();
+        String redirectUrl = "http://"+baseUrl+":4200/callback-token?accessToken=" + loginResponse.getAccessToken();
 
         response.sendRedirect(redirectUrl);
     }
