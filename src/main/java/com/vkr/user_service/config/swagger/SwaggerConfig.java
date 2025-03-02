@@ -14,25 +14,19 @@ import java.util.List;
 public class SwaggerConfig {
 
 
-    /**
-     * Настройка Swagger
-     */
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .servers(List.of(
-                        new Server().url("http://localhost:8080")
-                                .description("localhost server"),
                         new Server().url("http://109.172.95.212:8080")
-                                .description("test server")
+                                .description("test server"),
+                        new Server().url("http://localhost:8080")
+                                .description("localhost server")
                 ));
     }
 
-    /**
-     * Создание схемы аутентификации
-     */
     private SecurityScheme createAPIKeyScheme() {
         return new SecurityScheme().type(SecurityScheme.Type.HTTP)
                 .bearerFormat("JWT")
