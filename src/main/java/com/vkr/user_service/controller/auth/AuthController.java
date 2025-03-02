@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> redirectToSteam(HttpServletRequest request) {
         Map<String, String> response = new HashMap<>();
         response.put("openIdUrl", openIdUrl);
-        baseUrl = request.getServerName();
+        baseUrl = request.getHeader("referer");
         System.out.println(baseUrl);
 
         return ResponseEntity.ok(response);
@@ -61,7 +61,7 @@ public class AuthController {
     public void loginRedirect( HttpServletResponse response, @RequestParam Map<String, String> allRequestParams) throws IOException {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
-        String redirectUrl = "http://"+baseUrl+":4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        String redirectUrl = baseUrl+"callback-token?accessToken=" + loginResponse.getAccessToken();
         System.out.println(redirectUrl);
 
 
