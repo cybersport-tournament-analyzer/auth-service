@@ -19,10 +19,13 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+//@CrossOrigin(origins = "http://localhost:4200/")
 @Tag(name = "Auth Controller")
 public class AuthController {
 
+
     String requestUrl;
+
     String baseUrl;
     private final AuthService service;
     @JsonProperty("openIdUrl")
@@ -30,6 +33,7 @@ public class AuthController {
             + "&openid.mode=checkid_setup"
             + "&openid.return_to=http://109.172.95.212:8080/auth/login/redirect"
             + "&openid.realm=http://109.172.95.212:8080"
+
             + "&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select"
             + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
 
@@ -38,6 +42,8 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
         response.put("openIdUrl", openIdUrl);
         baseUrl = request.getServerName();
+        System.out.println(baseUrl);
+
         return ResponseEntity.ok(response);
 //        String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
 //                + "&openid.mode=checkid_setup"
@@ -56,12 +62,15 @@ public class AuthController {
         ResponseDto loginResponse = service.login(response, allRequestParams);
 
         String redirectUrl = "http://"+baseUrl+":4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+        System.out.println(redirectUrl);
+
 
         response.sendRedirect(redirectUrl);
     }
 
     @PostMapping("/refresh")
     public ResponseDto refresh(HttpServletRequest request) {
+        System.out.println("tut svaga &");
         return service.refresh(request);
     }
 
