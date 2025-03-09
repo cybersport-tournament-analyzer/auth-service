@@ -1,4 +1,4 @@
-name: User Service Docker CI
+name: Auth Service Docker CI
 
 on:
   push:
@@ -28,17 +28,17 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t vkr-user-service:latest .
+          docker build -t vkr-auth-service:latest .
 
       - name: Save Docker image as tar
         run: |
-          docker save -o vkr-user-service.tar vkr-user-service:latest
+          docker save -o vkr-auth-service.tar vkr-auth-service:latest
 
       - name: Upload Docker image as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: vkr-user-service
-          path: vkr-user-service.tar
+          name: vkr-auth-service
+          path: vkr-auth-service.tar
 
   deploy:
     needs: build
@@ -67,16 +67,16 @@ jobs:
           ssh-keyscan -H $REMOTE_HOST >> ~/.ssh/known_hosts
 
           # Copy Docker image to server
-          scp ./vkr-user-service/vkr-user-service.tar $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
+          scp ./vkr-auth-service/vkr-auth-service.tar $REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH
 
           # Load Docker image and run container
           ssh $REMOTE_USER@$REMOTE_HOST << EOF
             set -x
             cd $REMOTE_PATH
             ls -la
-            docker load -i vkr-user-service.tar
-            docker stop vkr-user-service || true
-            docker rm vkr-user-service || true
-            docker run --name vkr-user-service -d -p 8080:8080 -e CONFIG_HOST=$CONFIG_HOST -e CONFIG_GITHUB_LABEL=$CONFIG_GITHUB_LABEL -e EUREKA_HOST=$EUREKA_HOST vkr-user-service:latest
+            docker load -i vkr-auth-service.tar
+            docker stop vkr-auth-service || true
+            docker rm vkr-auth-service || true
+            docker run --name vkr-auth-service -d -p 8086:8086 -e CONFIG_HOST=$CONFIG_HOST -e CONFIG_GITHUB_LABEL=$CONFIG_GITHUB_LABEL -e EUREKA_HOST=$EUREKA_HOST vkr-auth-service:latest
             exit
           EOF

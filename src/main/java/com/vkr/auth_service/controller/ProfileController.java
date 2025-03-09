@@ -1,7 +1,7 @@
-package com.vkr.auth_service.controller.auth;
+package com.vkr.auth_service.controller;
 
+import com.vkr.auth_service.client.UserServiceClient;
 import com.vkr.auth_service.dto.user.UserDto;
-import com.vkr.auth_service.service.user.UserService;
 import com.vkr.auth_service.util.steam.SteamToken;
 import com.vkr.auth_service.util.steam.SteamUserPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final UserService userService;
+    private final UserServiceClient userService;
 
     @GetMapping("/profile")
     public UserDto profile() {

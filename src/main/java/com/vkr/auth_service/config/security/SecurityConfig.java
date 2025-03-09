@@ -35,7 +35,7 @@ public class SecurityConfig {
      * Список разрешенных URL
      */
     public static final String[] PERMITTED_URL = {
-            "/users/**", "/swagger-ui/**", "/auth/**", "/swagger-resources/*",
+            "/swagger-ui/**", "/auth/**", "/swagger-resources/*",
             "/v3/api-docs/**", "/actuator/**"
     };
 

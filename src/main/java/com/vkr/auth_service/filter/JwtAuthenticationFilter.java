@@ -1,10 +1,11 @@
 package com.vkr.auth_service.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vkr.auth_service.entity.user.Role;
-import com.vkr.auth_service.entity.user.User;
+import com.vkr.auth_service.client.UserServiceClient;
+import com.vkr.auth_service.dto.user.CreateUserDto;
+import com.vkr.auth_service.dto.user.Role;
+import com.vkr.auth_service.dto.user.UserDto;
 import com.vkr.auth_service.handler.ErrorResponse;
-import com.vkr.auth_service.repository.user.UserRepository;
 import com.vkr.auth_service.service.auth.AuthService;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
 import com.vkr.auth_service.util.jwt.JwtUtil;
@@ -26,11 +27,8 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import static com.vkr.auth_service.config.security.SecurityConfig.PERMITTED_URL;
 
@@ -43,8 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtGenerator jwtAccessGenerator;
     private final AuthService steamService;
     private final ObjectMapper objectMapper;
-    private final UserRepository userRepository;
     private final SteamAuthenticationProvider steamAuthenticationProvider;
+    private final UserServiceClient userServiceClient;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -84,22 +82,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             e.printStackTrace();
             return;
         }
-        Optional<User> userOptional = userRepository.findBySteamId(steamId);
-        User user;
         String username = (String) userAttributes.get("personaname");
         Integer faceitElo = !userAttributes.get("faceit_elo").equals("N/A") ? (Integer) userAttributes.get("faceit_elo") : 0;
         String avatar = (String) userAttributes.get("avatarfull");
         String steamLink = (String) userAttributes.get("profileurl");
-        if (userOptional.isEmpty()) {
-            user = userRepository.save(new User(UUID.randomUUID(), steamId, username, Long.valueOf(faceitElo), avatar, steamLink, LocalDateTime.now(), Role.USER));
-        } else {
-            user = userOptional.get();
-            user.setAvatarImageLink(userOptional.get().getAvatarImageLink());
-            user.setSteamProfileLink(userOptional.get().getSteamProfileLink());
-            user.setRatingElo(Long.valueOf(faceitElo));
-            user.setSteamUsername(username);
-            user = userRepository.save(user);
-        }
+
+        CreateUserDto userDto = CreateUserDto.builder()
+                .steamId(steamId)
+                .steamUsername(username)
+                .ratingElo(Long.valueOf(faceitElo))
+                .avatarImageLink(avatar)
+                .steamProfileLink(steamLink)
+                .role(Role.USER)
+                .build();
+
+        UserDto user = userServiceClient.saveUser(userDto);
         SteamUserPrincipal steamUserPrincipal = SteamUserPrincipal.create(user, userAttributes);
 
         SteamToken authToken = new SteamToken(steamId, steamUserPrincipal, steamUserPrincipal.getAuthorities());

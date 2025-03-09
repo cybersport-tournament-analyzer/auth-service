@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.UUID;
-
 @Builder
 @Getter
 @Setter
 @Jacksonized
-public class UserDto {
-    private UUID id;
+public class CreateUserDto {
     private String steamId;
     private String steamUsername;
     private Long ratingElo;

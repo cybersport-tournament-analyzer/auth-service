@@ -2,14 +2,15 @@ package com.vkr.auth_service.service.auth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vkr.auth_service.client.UserServiceClient;
 import com.vkr.auth_service.dto.response.ResponseDto;
+import com.vkr.auth_service.dto.user.UserDto;
 import com.vkr.auth_service.entity.token.JwtRefreshToken;
 import com.vkr.auth_service.exception.AuthException;
 import com.vkr.auth_service.exception.InvalidJwtException;
 import com.vkr.auth_service.repository.token.JwtRefreshTokenRepository;
 import com.vkr.auth_service.service.blacklist.BlacklistService;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
-import com.vkr.auth_service.service.user.UserService;
 import com.vkr.auth_service.util.jwt.JwtUtil;
 import com.vkr.auth_service.util.steam.SteamToken;
 import com.vkr.auth_service.util.steam.SteamUserPrincipal;
@@ -22,10 +23,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,7 +36,7 @@ import java.util.Map;
 public class AuthServiceImpl implements AuthService {
 
     private final JwtUtil jwtUtil;
-    private final UserService userService;
+    private final UserServiceClient userService;
     private final JwtGenerator jwtAccessGenerator;
     private final JwtGenerator jwtRefreshGenerator;
     private final AuthenticationManager authenticationManager;
@@ -49,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     @Value("${faceit.api.key}")
     private String faceitApiKey;
 
-    public AuthServiceImpl(JwtUtil jwtUtil, UserService userService,
+    public AuthServiceImpl(JwtUtil jwtUtil, UserServiceClient userService,
                            JwtGenerator jwtAccessGenerator, JwtGenerator jwtRefreshGenerator,
                            @Lazy AuthenticationManager authenticationManager,
                            JwtRefreshTokenRepository jwtRefreshTokenRepository,
@@ -170,10 +173,15 @@ public class AuthServiceImpl implements AuthService {
 
                 System.out.println("Refresh token is valid");
 
-                UserDetails user = userService
-                        .userDetailsService()
-                        .loadUserByUsername(steamId);
+                UserDto userDto = userService.getUserBySteamId(steamId);
 
+                UserDetails user = new SteamUserPrincipal(
+                        userDto.getId(),
+                        userDto.getSteamId(),
+                        userDto.getSteamUsername(),
+                        Map.of(),
+                        List.of(new SimpleGrantedAuthority(userDto.getRole().name()))
+                );
                 String accessToken = jwtAccessGenerator.generateToken(user);
 
                 return new ResponseDto(accessToken);

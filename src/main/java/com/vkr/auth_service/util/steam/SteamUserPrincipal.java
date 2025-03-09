@@ -1,6 +1,6 @@
 package com.vkr.auth_service.util.steam;
 
-import com.vkr.auth_service.entity.user.User;
+import com.vkr.auth_service.dto.user.UserDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,11 +21,11 @@ public class SteamUserPrincipal implements UserDetails {
     private Map<String, Object> attributes;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public static SteamUserPrincipal create(User user, Map<String, Object> attributes) {
+    public static SteamUserPrincipal create(UserDto user, Map<String, Object> attributes) {
         List<GrantedAuthority> authorities = Collections.
                 singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new SteamUserPrincipal(user.getId(), user.getSteamId(), user.getUsername(), Collections.unmodifiableMap(attributes), authorities);
+        return new SteamUserPrincipal(user.getId(), user.getSteamId(), user.getSteamUsername(), Collections.unmodifiableMap(attributes), authorities);
     }
 
     @Override

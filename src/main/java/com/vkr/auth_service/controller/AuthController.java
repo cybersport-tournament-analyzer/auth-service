@@ -1,4 +1,4 @@
-package com.vkr.auth_service.controller.auth;
+package com.vkr.auth_service.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vkr.auth_service.dto.response.ResponseDto;
@@ -23,11 +23,18 @@ import java.util.Map;
     public class AuthController {
 
         private final AuthService service;
+
+//        String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
+//                + "&openid.mode=checkid_setup"
+//                + "&openid.return_to=http://109.172.95.212:8080/auth/login/redirect"
+//                + "&openid.realm=http://109.172.95.212:8080"
+//                + "&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select"
+//                + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
         @JsonProperty("openIdUrl")
         String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
                 + "&openid.mode=checkid_setup"
-                + "&openid.return_to=http://109.172.95.212:8080/auth/login/redirect"
-                + "&openid.realm=http://109.172.95.212:8080"
+                + "&openid.return_to=http://localhost:8086/auth/login/redirect"
+                + "&openid.realm=http://localhost:8086"
                 + "&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select"
                 + "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select";
 
