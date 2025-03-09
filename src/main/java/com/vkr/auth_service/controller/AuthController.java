@@ -3,6 +3,7 @@ package com.vkr.auth_service.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vkr.auth_service.dto.response.ResponseDto;
 import com.vkr.auth_service.service.auth.AuthService;
+import com.vkr.auth_service.service.jwt.JwtAccessGenerator;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
 import com.vkr.auth_service.util.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
