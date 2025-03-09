@@ -3,10 +3,14 @@ package com.vkr.auth_service.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vkr.auth_service.dto.response.ResponseDto;
 import com.vkr.auth_service.service.auth.AuthService;
+import com.vkr.auth_service.service.jwt.JwtGenerator;
+import com.vkr.auth_service.util.jwt.JwtUtil;
+import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,9 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthService service;
+    private final JwtUtil jwtUtil;
+    private final JwtGenerator jwtAccessGenerator;
+
     @JsonProperty("openIdUrl")
     String openIdUrl = "https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0"
             + "&openid.mode=checkid_setup"
@@ -79,5 +86,21 @@ public class AuthController {
     @PostMapping("/logout")
     public void logout(HttpServletRequest request) {
         service.logout(request);
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<Void> validateToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        try {
+            String jwt = token.substring(7);
+
+            Claims claims = jwtUtil.extractAllClaims(jwt, jwtAccessGenerator);
+            if (claims != null && !jwtUtil.isTokenBlacklisted(jwt)) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
