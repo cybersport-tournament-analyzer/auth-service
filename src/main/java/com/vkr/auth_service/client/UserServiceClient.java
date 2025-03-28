@@ -5,7 +5,7 @@ import com.vkr.auth_service.dto.user.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "user-service", url = "http://109.172.95.212:8080")
+@FeignClient(name = "user-service", url = "http://localhost:8080")
 public interface UserServiceClient {
 
     @GetMapping("/users/steam/{steamId}")
