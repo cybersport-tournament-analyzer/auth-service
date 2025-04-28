@@ -154,6 +154,12 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.extractTokenFromRequestHeader(request);
 
         blacklistService.addToBlacklist(token);
+
+        System.out.println("deleting refresh");
+        System.out.println(jwtUtil.extractTokenFromRequestCookie(request));
+        System.out.println("-----------------");
+
+        jwtRefreshTokenRepository.deleteByToken(jwtUtil.extractTokenFromRequestCookie(request));
     }
 
     @Override
@@ -164,6 +170,8 @@ public class AuthServiceImpl implements AuthService {
             Claims claims = jwtUtil.extractAllClaims(token, jwtRefreshGenerator);
 
             String steamId = claims.getSubject();
+            System.out.println("-----------------");
+            System.out.println("resresh logs");
             System.out.println(steamId);
             String cacheToken = getCachedRefreshToken(steamId);
             System.out.println(cacheToken);

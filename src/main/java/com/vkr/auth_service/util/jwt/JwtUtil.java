@@ -72,6 +72,9 @@ public class JwtUtil {
 
         String token = null;
 
+        System.out.println("-----------------");
+        System.out.println("cookie");
+
         if (request.getCookies() != null) {
             for (Cookie cookie: request.getCookies()) {
                 if (cookie.getName().equals("refresh-token")) {
@@ -116,9 +119,17 @@ public class JwtUtil {
 
         long expiration = generator.getSecret().getExpiration();
 
+//        ResponseCookie cookie = ResponseCookie.from("refresh-token", token)
+//                .httpOnly(false)
+//                .secure(false)
+//                .path("/")
+//                .maxAge(Duration.ofMillis(expiration))
+//                .build();
+
         ResponseCookie cookie = ResponseCookie.from("refresh-token", token)
                 .httpOnly(false)
-                .secure(false)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(Duration.ofMillis(expiration))
                 .build();
