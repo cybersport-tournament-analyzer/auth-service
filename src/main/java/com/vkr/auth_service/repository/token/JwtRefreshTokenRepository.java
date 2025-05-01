@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface JwtRefreshTokenRepository extends KeyValueRepository<JwtRefreshToken, String> {
     void deleteByToken(String token);
+    boolean existsByToken(String token);
 }
 

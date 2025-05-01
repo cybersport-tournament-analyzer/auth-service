@@ -3,6 +3,7 @@ package com.vkr.auth_service.util.jwt;
 import com.vkr.auth_service.exception.AuthException;
 import com.vkr.auth_service.exception.InvalidJwtException;
 import com.vkr.auth_service.property.JwtProperties;
+import com.vkr.auth_service.repository.token.JwtRefreshTokenRepository;
 import com.vkr.auth_service.service.blacklist.BlacklistService;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
 import io.jsonwebtoken.Claims;
@@ -28,6 +29,7 @@ public class JwtUtil {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String HEADER_NAME = "Authorization";
     private final BlacklistService blacklistService;
+    private final JwtRefreshTokenRepository jwtRefreshTokenRepository;
 
     /**
      * Проверка токена на наличие в черном списке
@@ -38,6 +40,8 @@ public class JwtUtil {
     public boolean isTokenBlacklisted(String token) {
         return blacklistService.isBlacklisted(token);
     }
+
+    public boolean existsRefreshToken(String token) {return jwtRefreshTokenRepository.existsById(token);}
 
     /**
      * Извлечение всех данных из токена

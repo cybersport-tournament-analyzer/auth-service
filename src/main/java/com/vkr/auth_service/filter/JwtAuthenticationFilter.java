@@ -8,6 +8,7 @@ import com.vkr.auth_service.dto.user.UserDto;
 import com.vkr.auth_service.handler.ErrorResponse;
 import com.vkr.auth_service.service.auth.AuthService;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
+import com.vkr.auth_service.service.jwt.JwtRefreshGenerator;
 import com.vkr.auth_service.util.jwt.JwtUtil;
 import com.vkr.auth_service.util.steam.SteamAuthenticationProvider;
 import com.vkr.auth_service.util.steam.SteamToken;
@@ -43,16 +44,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
     private final SteamAuthenticationProvider steamAuthenticationProvider;
     private final UserServiceClient userServiceClient;
+    private final JwtRefreshGenerator jwtRefreshGenerator;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws IOException {
         try {
-            String token = jwtUtil.extractTokenFromRequestHeader(request);
-            Claims claims = jwtUtil.extractAllClaims(token, jwtAccessGenerator);
+//            String token = jwtUtil.extractTokenFromRequestHeader(request);
+//            Claims claims = jwtUtil.extractAllClaims(token, jwtAccessGenerator);
 
-            if (!jwtUtil.isTokenBlacklisted(token)) {
+            String token = jwtUtil.extractTokenFromRequestCookie(request);
+            Claims claims = jwtUtil.extractAllClaims(token, jwtRefreshGenerator);
+
+            if (!jwtUtil.existsRefreshToken(token)) {
                 authorize(claims, request);
             }
 
