@@ -20,7 +20,7 @@ public class SwaggerConfig {
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()))
                 .servers(List.of(
-                        new Server().url("http://77.221.158.197:8086")
+                        new Server().url("https://cybersport-tournament-analyzer-auth-service-cb72.twc1.net")
                                 .description("test server"),
                         new Server().url("http://localhost:8086")
                                 .description("localhost server")
