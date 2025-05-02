@@ -58,7 +58,7 @@ public class AuthController {
         if (baseUrl.contains("localhost")) {
             redirectUrl = "http://localhost:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
         } else {
-            redirectUrl = "http://77.221.158.197:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
+            redirectUrl = "http://176.98.178.99:4200/callback-token?accessToken=" + loginResponse.getAccessToken();
         }
 
         response.sendRedirect(redirectUrl);
