@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
      * Обработка ошибок при невалидном JWT
      */
     @ExceptionHandler(InvalidJwtException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDataValidationException(InvalidJwtException e, HttpServletRequest request) {
         log.error("Invalid JWT exception: {}", e.getMessage());
         return new ErrorResponse(e, request.getRequestURI());
