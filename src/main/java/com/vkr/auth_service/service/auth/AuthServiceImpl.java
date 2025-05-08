@@ -1,5 +1,6 @@
 package com.vkr.auth_service.service.auth;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vkr.auth_service.client.UserServiceClient;
@@ -8,6 +9,7 @@ import com.vkr.auth_service.dto.user.UserDto;
 import com.vkr.auth_service.entity.token.JwtRefreshToken;
 import com.vkr.auth_service.exception.AuthException;
 import com.vkr.auth_service.exception.InvalidJwtException;
+import com.vkr.auth_service.exception.SteamErrorException;
 import com.vkr.auth_service.repository.token.JwtRefreshTokenRepository;
 import com.vkr.auth_service.service.blacklist.BlacklistService;
 import com.vkr.auth_service.service.jwt.JwtGenerator;
@@ -67,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Map<String, Object> getUserData(String steamUserId) throws Exception {
+    public Map<String, Object> getUserData(String steamUserId) throws SteamErrorException, JsonProcessingException {
         String steamUrl = String.format("%s/ISteamUser/GetPlayerSummaries/v2/?key=%s&format=json&steamids=%s",
                 steamApiUrl, steamApiToken, steamUserId);
         RestTemplate restTemplate = new RestTemplate();
@@ -210,7 +212,7 @@ public class AuthServiceImpl implements AuthService {
     private String getCachedRefreshToken(String username) {
 
         JwtRefreshToken tokenCache = jwtRefreshTokenRepository.findById(username)
-                .orElseThrow(() -> new AuthException("No such token in cache: " + username));
+                .orElseThrow(() -> new InvalidJwtException("No such token in cache: " + username));
 
         return tokenCache.getToken();
     }

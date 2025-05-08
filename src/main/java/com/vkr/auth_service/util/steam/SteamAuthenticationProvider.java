@@ -4,6 +4,7 @@ import com.vkr.auth_service.client.UserServiceClient;
 import com.vkr.auth_service.dto.user.CreateUserDto;
 import com.vkr.auth_service.dto.user.Role;
 import com.vkr.auth_service.dto.user.UserDto;
+import com.vkr.auth_service.exception.SteamErrorException;
 import com.vkr.auth_service.service.auth.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -29,8 +30,7 @@ public class SteamAuthenticationProvider implements AuthenticationProvider {
         try {
             userAttributes = steamService.getUserData(steamId);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new SteamErrorException(e.getMessage());
         }
         String username = (String) userAttributes.get("personaname");
         Integer faceitElo = !userAttributes.get("faceit_elo").equals("N/A") ? (Integer) userAttributes.get("faceit_elo") : 0;

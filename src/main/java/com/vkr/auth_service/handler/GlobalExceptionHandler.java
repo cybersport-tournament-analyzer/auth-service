@@ -2,6 +2,7 @@ package com.vkr.auth_service.handler;
 
 import com.vkr.auth_service.exception.AuthException;
 import com.vkr.auth_service.exception.InvalidJwtException;
+import com.vkr.auth_service.exception.SteamErrorException;
 import com.vkr.auth_service.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -65,29 +66,29 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Обработка ошибок аутентификации
+     * Обработка ошибок аутентификации + access
      */
     @ExceptionHandler(AuthException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleDataValidationException(AuthException e, HttpServletRequest request) {
-        log.error("Auth exception: {}", e.getMessage());
+        log.error("Auth or access exception: {}", e.getMessage());
         return new ErrorResponse(e, request.getRequestURI());
     }
 
     /**
-     * Обработка ошибок при невалидном JWT
+     * Обработка ошибок при невалидном refresh JWT
      */
     @ExceptionHandler(InvalidJwtException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDataValidationException(InvalidJwtException e, HttpServletRequest request) {
-        log.error("Invalid access JWT exception: {}", e.getMessage());
+        log.error("Invalid refresh JWT exception: {}", e.getMessage());
         return new ErrorResponse(e, request.getRequestURI());
     }
 
-//    @ExceptionHandler(InvalidJwtException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    public ErrorResponse handleDataValidationExceptionRefresh(InvalidJwtException e, HttpServletRequest request) {
-//        log.error("Invalid refresh JWT exception: {}", e.getMessage());
-//        return new ErrorResponse(e, request.getRequestURI());
-//    }
+    @ExceptionHandler(SteamErrorException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleDataValidationExceptionRefresh(SteamErrorException e, HttpServletRequest request) {
+        log.error("Ошибка со стимом: {}", e.getMessage());
+        return new ErrorResponse(e, request.getRequestURI());
+    }
 }

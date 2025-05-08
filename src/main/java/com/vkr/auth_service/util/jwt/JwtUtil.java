@@ -41,8 +41,6 @@ public class JwtUtil {
         return blacklistService.isBlacklisted(token);
     }
 
-    public boolean existsRefreshToken(String token) {return jwtRefreshTokenRepository.existsById(token);}
-
     /**
      * Извлечение всех данных из токена
      *
@@ -52,7 +50,7 @@ public class JwtUtil {
      *
      * @throws InvalidJwtException если токен невалиден
      */
-    public Claims extractAllClaims(String token, JwtGenerator generator) throws InvalidJwtException {
+    public Claims extractAllClaims(String token, JwtGenerator generator) throws AuthException {
         try {
             return Jwts.parser()
                     .verifyWith(getSigningKey(generator))
@@ -60,7 +58,7 @@ public class JwtUtil {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (Exception e) {
-            throw new InvalidJwtException(e.getLocalizedMessage());
+            throw new AuthException(e.getLocalizedMessage());
         }
     }
 
@@ -72,7 +70,7 @@ public class JwtUtil {
      *
      * @throws AuthException если токен не найден
      */
-    public String extractTokenFromRequestCookie(HttpServletRequest request) throws AuthException {
+    public String extractTokenFromRequestCookie(HttpServletRequest request) throws InvalidJwtException {
 
         String token = null;
 
@@ -88,7 +86,7 @@ public class JwtUtil {
         }
 
         if (token == null) {
-            throw new AuthException("No cookie refresh token");
+            throw new InvalidJwtException("No cookie refresh token");
         }
 
         return token;
