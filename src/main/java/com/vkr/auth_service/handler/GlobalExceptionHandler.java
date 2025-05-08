@@ -80,7 +80,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidJwtException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDataValidationException(InvalidJwtException e, HttpServletRequest request) {
-        log.error("Invalid JWT exception: {}", e.getMessage());
+        log.error("Invalid access JWT exception: {}", e.getMessage());
         return new ErrorResponse(e, request.getRequestURI());
     }
+
+//    @ExceptionHandler(InvalidJwtException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    public ErrorResponse handleDataValidationExceptionRefresh(InvalidJwtException e, HttpServletRequest request) {
+//        log.error("Invalid refresh JWT exception: {}", e.getMessage());
+//        return new ErrorResponse(e, request.getRequestURI());
+//    }
 }
